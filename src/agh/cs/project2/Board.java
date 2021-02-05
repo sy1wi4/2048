@@ -29,7 +29,7 @@ public class Board {
         }
     }
 
-    private Tile getTile(int x, int y){
+    public Tile getTile(int x, int y){
         return board[x][y];
     }
 
@@ -41,12 +41,14 @@ public class Board {
     }
 
     public void printBoard(){
+        System.out.println();
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
                 System.out.print(board[i][j].getValue() + " ");
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     private LinkedList<Tile> getFreeTiles(){
@@ -61,7 +63,7 @@ public class Board {
         return freeTiles;
     }
 
-    private Tile getRandomFreeTile(){
+    public Tile getRandomFreeTile(){
         LinkedList<Tile> tiles = getFreeTiles();
         if (tiles.size() == 0) return null;
 
@@ -69,8 +71,22 @@ public class Board {
         return tiles.get(idx);
     }
 
-    private void placeTile(int x, int y, int value){
-        board[x][y] = new Tile(x,y,value);
+    public void placeTile(Tile tile){
+        board[tile.getX()][tile.getY()] = tile;
     }
+
+    public void removeTile(int x, int y){
+        board[x][y] = new Tile(x,y,0);
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+
+    public boolean isOccupied(int x, int y){
+        return getTile(x,y).getValue() != 0;
+    }
+
 
 }
