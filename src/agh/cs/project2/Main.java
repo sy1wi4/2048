@@ -8,4 +8,5 @@ public class Main {
 
 
     // TODO: wektory pozycji, move vertical/horizontal - wymysl co
+    // TODO: nulle zamiast tile z wartością 0 (?)
 }
