@@ -1,6 +1,7 @@
 package agh.cs.project2.game;
 
 
+
 import static agh.cs.project2.game.Direction.*;
 
 public class GameEngine {
@@ -11,32 +12,8 @@ public class GameEngine {
         this.score = 0;
     }
 
-    public void run(){
-        board.printBoard();
-//
-//        for (int i = 0; i < 8; i++){
-//            if (i % 2 == 0) {
-//                System.out.println("up");
-//                moveTiles(UP);
-//                board.printBoard();
-//
-//                System.out.println("right");
-//                moveTiles(RIGHT);
-//            }
-//            else {
-//                System.out.println("down");
-//                moveTiles(DOWN);
-//                board.printBoard();
-//
-//                System.out.println("left");
-//                moveTiles(LEFT);
-//            }
-//            board.printBoard();
-//        }
-    }
 
-
-    public void moveTiles(Direction direction){
+    public boolean moveTiles(Direction direction){
         switch (direction){
             case UP -> moveVertical(UP);
             case DOWN -> moveVertical(DOWN);
@@ -46,8 +23,13 @@ public class GameEngine {
 
         // TODO: dodaj 2 lub inną wartość (niewiększą niż max)
         Tile freeTile = board.getRandomFreeTile();
+        if (freeTile == null) {
+            System.out.println("Game over");
+//            System.exit(0);
+            return false;
+        }
         freeTile.updateValue(2);
-        board.printBoard();
+        return true;
     }
 
     // up - od 0 wiersza
@@ -165,5 +147,9 @@ public class GameEngine {
 
     public int getScore() {
         return score;
+    }
+
+    public Tile[][] getBoard() {
+        return board.getBoard();
     }
 }

@@ -40,16 +40,16 @@ public class Board {
         freeTile2.updateValue(2);
     }
 
-    public void printBoard(){
-        System.out.println();
-        for (int i = 0; i < size; i++){
-            for (int j = 0; j < size; j++){
-                System.out.print(board[i][j].getValue() + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
+//    public void printBoard(){
+//        System.out.println();
+//        for (int i = 0; i < size; i++){
+//            for (int j = 0; j < size; j++){
+//                System.out.print(board[i][j].getValue() + " ");
+//            }
+//            System.out.println();
+//        }
+//        System.out.println();
+//    }
 
     private LinkedList<Tile> getFreeTiles(){
         LinkedList<Tile> freeTiles = new LinkedList<>();
@@ -88,5 +88,7 @@ public class Board {
         return getTile(x,y).getValue() != 0;
     }
 
-
+    public Tile[][] getBoard() {
+        return board;
+    }
 }
