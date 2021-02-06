@@ -1,4 +1,4 @@
-package agh.cs.project2;
+package agh.cs.project2.game;
 
 public class Tile {
     private int value;

@@ -1,44 +1,42 @@
-package agh.cs.project2;
+package agh.cs.project2.game;
 
 
-import static agh.cs.project2.Direction.*;
+import static agh.cs.project2.game.Direction.*;
 
-public class Engine {
+public class GameEngine {
     private Board board;
     private int score;
-    public Engine(){
+    public GameEngine(){
         this.board = new Board();
         this.score = 0;
-
-
     }
 
     public void run(){
         board.printBoard();
-
-        for (int i = 0; i < 8; i++){
-            if (i%2 == 0) {
+//
+//        for (int i = 0; i < 8; i++){
+//            if (i % 2 == 0) {
 //                System.out.println("up");
 //                moveTiles(UP);
 //                board.printBoard();
-
-                System.out.println("right");
-                moveTiles(RIGHT);
-            }
-            else {
+//
+//                System.out.println("right");
+//                moveTiles(RIGHT);
+//            }
+//            else {
 //                System.out.println("down");
 //                moveTiles(DOWN);
 //                board.printBoard();
-
-                System.out.println("left");
-                moveTiles(LEFT);
-            }
-            board.printBoard();
-        }
+//
+//                System.out.println("left");
+//                moveTiles(LEFT);
+//            }
+//            board.printBoard();
+//        }
     }
 
 
-    private void moveTiles(Direction direction){
+    public void moveTiles(Direction direction){
         switch (direction){
             case UP -> moveVertical(UP);
             case DOWN -> moveVertical(DOWN);
@@ -49,7 +47,7 @@ public class Engine {
         // TODO: dodaj 2 lub inną wartość (niewiększą niż max)
         Tile freeTile = board.getRandomFreeTile();
         freeTile.updateValue(2);
-
+        board.printBoard();
     }
 
     // up - od 0 wiersza
@@ -63,52 +61,47 @@ public class Engine {
 
             int toPlace = -1;  // najdalszy możliwy wiersz, w którym możemy umieścić płytkę
             Tile prev = null;  //poprzednia płytka w danej kolumnie
-//            boolean prevMerged = false;  // czy poprzednia była merge'owana   TO POTRZEBNE???
+            boolean prevMerged = false;  // czy poprzednia była merge'owana - w tym wypadku kolejną tylko przesuwamy
 
             for (int row : rows){
-//                System.out.print(row);
-//                System.out.print(col + " ");
 
                 if (!board.isOccupied(row,col)){
-//                    System.out.println("wolne");
                     if (toPlace == -1) toPlace = row;
-
                 }
                 else{
-
                     Tile tile = board.getTile(row, col);
 
-                    // tylko przesuwamy (lub nie jak nie ma gdzie)
-                    if (prev == null || (prev.getValue() != tile.getValue())){
+                    // tylko przesuwamy (lub nie, jeśli nie ma gdzie)
+                    if (prevMerged || prev == null || (prev.getValue() != tile.getValue())){
                         if (toPlace == -1) {
-//                            System.out.println("nie ruszaj");
                             prev = board.getTile(row,col);
                         }
                         else {
-//                            System.out.println("przesun " + toPlace);
                             tile.setX(toPlace);
                             board.placeTile(tile);
                             board.removeTile(row, col);
-                            toPlace = -1;
+
+                            if (direction == UP) toPlace += 1;
+                            else toPlace -= 1;
                         }
                         prev = tile;
                     }
 
                     // merge
                     else {
-//                        System.out.println("merge " + prev.getX() + " " + prev.getY());
                         int val = tile.getValue();
                         board.placeTile(prev.mergeTiles(tile, prev.getX(),prev.getY()));
                         board.removeTile(row,col);
-                        toPlace = -1;
-//                        prevMerged = true;
+
+                        if (direction == UP) toPlace = prev.getX() + 1;
+                        else toPlace = prev.getX() - 1;
+
+                        prevMerged = true;
                         score += 2 * val;
                     }
-
                 }
             }
         }
-
     }
 
     // left - od 0 kolumny
@@ -122,7 +115,7 @@ public class Engine {
 
             int toPlace = -1;  // najdalsza możliwa kolumna, w której możemy umieścić płytkę
             Tile prev = null;  //poprzednia płytka w danym wierszu
-//            boolean prevMerged = false;  // czy poprzednia była merge'owana   TO POTRZEBNE???
+            boolean prevMerged = false;  // czy poprzednia była merge'owana   TO POTRZEBNE???  -- chyba tak
 
             for (int col : cols) {
 //                System.out.print(row);
@@ -137,7 +130,7 @@ public class Engine {
                     Tile tile = board.getTile(row, col);
 
                     // tylko przesuwamy (lub nie jak nie ma gdzie)
-                    if (prev == null || (prev.getValue() != tile.getValue())) {
+                    if (prevMerged || (prev == null || (prev.getValue() != tile.getValue()))) {
                         if (toPlace == -1) {
 //                            System.out.println("nie ruszaj");
                             prev = board.getTile(row, col);
@@ -146,9 +139,11 @@ public class Engine {
                             tile.setY(toPlace);
                             board.placeTile(tile);
                             board.removeTile(row, col);
-                            toPlace = -1;
+                            if (direction == LEFT) toPlace += 1;
+                            else toPlace -= 1;
                         }
                         prev = tile;
+                        prevMerged = false;
                     }
 
                     // merge
@@ -157,8 +152,9 @@ public class Engine {
                         int val = tile.getValue();
                         board.placeTile(prev.mergeTiles(tile, prev.getX(), prev.getY()));
                         board.removeTile(row, col);
-                        toPlace = -1;
-//                        prevMerged = true;
+                        if (direction == LEFT) toPlace = prev.getY() + 1;
+                        else toPlace = prev.getY() - 1;
+                        prevMerged = true;
                         score += 2 * val;
                     }
 

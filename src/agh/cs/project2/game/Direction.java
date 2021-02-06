@@ -1,4 +1,4 @@
-package agh.cs.project2;
+package agh.cs.project2.game;
 
 public enum Direction {
     UP,
