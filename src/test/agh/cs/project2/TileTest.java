@@ -8,10 +8,10 @@ import java.awt.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TileTest {
-    private Tile tile1 = new Tile(1, 1);
-    private Tile tile2 = new Tile(1, 3);
-    private Tile tile3 = new Tile(0, 1);
-    private Tile tile4 = new Tile(1, 1);
+    private final Tile tile1 = new Tile(1, 1);
+    private final Tile tile2 = new Tile(1, 3);
+    private final Tile tile3 = new Tile(0, 1);
+    private final Tile tile4 = new Tile(1, 1);
 
     private final Color color2048 = new Color(89, 180, 79);
     private final Color color256 = new Color(187, 186, 62);
@@ -27,7 +27,7 @@ public class TileTest {
         assertEquals(expected, merged);
 
         tile3.updateValue(16);
-        Exception ex = assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> tile1.mergeTiles(tile3, tile1.getX(), tile1.getY()));
     }
 

@@ -31,18 +31,10 @@ public class GamePanel extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         boolean f = true;   // if flag is false, then game is over
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP -> {
-                f = gameEngine.moveTiles(Direction.UP);
-            }
-            case KeyEvent.VK_DOWN -> {
-                f = gameEngine.moveTiles(Direction.DOWN);
-            }
-            case KeyEvent.VK_LEFT -> {
-                f = gameEngine.moveTiles(Direction.LEFT);
-            }
-            case KeyEvent.VK_RIGHT -> {
-                f = gameEngine.moveTiles(Direction.RIGHT);
-            }
+            case KeyEvent.VK_UP -> f = gameEngine.moveTiles(Direction.UP);
+            case KeyEvent.VK_DOWN -> f = gameEngine.moveTiles(Direction.DOWN);
+            case KeyEvent.VK_LEFT -> f = gameEngine.moveTiles(Direction.LEFT);
+            case KeyEvent.VK_RIGHT -> f = gameEngine.moveTiles(Direction.RIGHT);
         }
 
         dataPanel.updateScore();
@@ -74,16 +66,15 @@ public class GamePanel extends JPanel implements KeyListener {
             int row = (i - col) / 4;
             if (board[row][col].getValue() == 0) {
                 tiles[i] = new JLabel("", JLabel.CENTER);
-                tiles[i].setBackground(board[row][col].getColor());
             }
             else {
                 tiles[i] = new JLabel(String.valueOf(board[row][col].getValue()), JLabel.CENTER);
-                tiles[i].setBackground(board[row][col].getColor());
             }
+            tiles[i].setBackground(board[row][col].getColor());
             tile = tiles[i];
             tile.setOpaque(true);
             tile.setBorder(BorderFactory.createMatteBorder(6, 6, 6, 6, new Color(0x998E86)));
-            tile.setFont(new java.awt.Font("Dialog", 1, 60));
+            tile.setFont(new java.awt.Font("Dialog", Font.BOLD, 60));
             if (board[row][col].getValue() == 0) tile.setBackground(board[row][col].getColor());
             this.add(tile);
         }
@@ -100,7 +91,7 @@ public class GamePanel extends JPanel implements KeyListener {
                 if (value == 0)
                     tile.setText("");
                 else {
-                    tile.setFont(new java.awt.Font("Dialog", 1, 52));
+                    tile.setFont(new java.awt.Font("Dialog", Font.BOLD, 52));
                     tile.setText(String.valueOf(value));
                 }
                 tile.setBackground(board[i][j].getColor());

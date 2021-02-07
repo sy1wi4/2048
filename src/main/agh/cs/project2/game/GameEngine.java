@@ -21,11 +21,10 @@ public class GameEngine {
             case RIGHT -> moveHorizontal(RIGHT);
         }
 
-        System.out.println(score);
         return addRandomTileOnBoard();
     }
 
-    private boolean addRandomTileOnBoard(){
+    public boolean addRandomTileOnBoard(){
         Tile freeTile = board.getRandomFreeTile();
 
         if (freeTile == null) {
@@ -63,7 +62,6 @@ public class GameEngine {
                     // move tile to first possible place (or not if there is no place)
                     if (prevMerged || prev == null || (prev.getValue() != tile.getValue())){
                         if (toPlace == -1) {
-                            prev = board.getTile(row,col);
                         }
                         else {
                             tile.setX(toPlace);
@@ -117,7 +115,6 @@ public class GameEngine {
 
                     if (prevMerged || (prev == null || (prev.getValue() != tile.getValue()))) {
                         if (toPlace == -1) {
-                            prev = board.getTile(row, col);
                         } else {
                             tile.setY(toPlace);
                             board.placeTile(tile);
@@ -157,5 +154,9 @@ public class GameEngine {
 
     public boolean gameWon(){
         return (board.getMaxTileValue() == 2048);
+    }
+
+    public void placeTile(Tile tile){
+        board.placeTile(tile);
     }
 }

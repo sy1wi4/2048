@@ -1,6 +1,5 @@
 package agh.cs.project2;
 
-import agh.cs.project2.game.Board;
 import agh.cs.project2.game.Direction;
 import agh.cs.project2.game.GameEngine;
 import agh.cs.project2.game.Tile;

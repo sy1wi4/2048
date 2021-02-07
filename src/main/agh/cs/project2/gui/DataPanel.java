@@ -10,13 +10,13 @@ public class DataPanel extends JPanel {
 
     public DataPanel(GameEngine gameEngine){
         this.gameEngine = gameEngine;
-        this.score = new JLabel("   Score: " + String.valueOf(gameEngine.getScore()));
+        this.score = new JLabel("   Score: " + gameEngine.getScore());
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(createLine(Box.createVerticalStrut(20)));
         JLabel jLabel = new JLabel(" 2048");
         jLabel.setForeground(new java.awt.Color(0xAF672B));
-        jLabel.setFont(new java.awt.Font("MyFont", 1, 60));
+        jLabel.setFont(new java.awt.Font("MyFont", Font.BOLD, 60));
 
         this.add(createLine(jLabel));
         this.add(createLine(Box.createVerticalStrut(30)));
@@ -35,12 +35,12 @@ public class DataPanel extends JPanel {
 
     private void placeScore(){
         score.setForeground(new java.awt.Color(0x4E3520));
-        score.setFont(new java.awt.Font("MyFont", 1, 24));
+        score.setFont(new java.awt.Font("MyFont", Font.BOLD, 24));
         this.add(createLine(score));
     }
 
     public void updateScore(){
-        score.setText(String.valueOf("   Score: " + gameEngine.getScore()));
+        score.setText("   Score: " + gameEngine.getScore());
     }
 
 }

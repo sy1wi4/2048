@@ -6,10 +6,10 @@ import java.util.Random;
 import static java.lang.Integer.max;
 
 public class Board {
-    private int size;
+    private final int size;
     private final Tile[][] board;
-    Random rand = new Random();
     private int maxTileValue;
+    final Random rand = new Random();
 
     // default board 4x4
     public Board(){
@@ -20,10 +20,6 @@ public class Board {
         placeInitialTiles();
     }
 
-    public Board(int size){
-        this.size = size;
-        this.board = new Tile[size][size];
-    }
 
     private void initializeBoard(){
         for (int i = 0; i < size; i++){
@@ -69,6 +65,7 @@ public class Board {
 
     public void placeTile(Tile tile){
         board[tile.getX()][tile.getY()] = tile;
+        updateMaxTileValue(tile.getValue());
     }
 
     public void removeTile(int x, int y){

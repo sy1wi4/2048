@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
-    private Board board = new Board();
+    private final Board board = new Board();
 
     @Test
     public void initialBoardTest(){
