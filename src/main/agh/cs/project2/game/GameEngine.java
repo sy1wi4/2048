@@ -67,6 +67,7 @@ public class GameEngine {
                             else toPlace -= 1;
                         }
                         prev = tile;
+                        prevMerged = false;
                     }
 
                     // merge current tile with previous
@@ -95,7 +96,7 @@ public class GameEngine {
                 } else {
                     Tile tile = board.getTile(row, col);
 
-                    if (prevMerged || (prev == null || (prev.getValue() != tile.getValue()))) {
+                    if (prevMerged || prev == null || (prev.getValue() != tile.getValue())) {
                         if (toPlace == -1) {
                         } else {
                             tile.setY(toPlace);
