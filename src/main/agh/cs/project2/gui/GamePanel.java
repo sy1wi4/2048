@@ -6,84 +6,22 @@ import agh.cs.project2.game.Tile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class GamePanel extends JPanel implements KeyListener {
-    private final GameEngine gameEngine = new GameEngine();
+    private final GameEngine gameEngine;
     private JLabel[] tiles;
+    private final DataPanel dataPanel;
 
-    public GamePanel() {
-//        setPreferredSize(new Dimension(400, 400));
-//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//
-//        this.add(createLine(Box.createVerticalStrut(25)));
-//        JLabel jLabel = new JLabel("2048");
-//        jLabel.setForeground(new java.awt.Color(0xAF672B));
-//        jLabel.setFont(new java.awt.Font("MyFont", 1, 80));
-//        this.add(createLine(jLabel));
-//        this.add(createLine(Box.createVerticalStrut(50)));
-
+    public GamePanel(GameEngine gameEngine, DataPanel dataPanel) {
+        this.gameEngine = gameEngine;
+        this.dataPanel = dataPanel;
         setLayout(new GridLayout(4, 4));
-//        getContentPane().setBackground(new java.awt.Color(0xCDC1B4));
-
-
         addKeyListener(this);
         setFocusable(true);
-
-        // TODO: przycisk startu, score
-
         initialPaint();
-
-
-
-//        addStartButton();
-//        addEndButton();
     }
-
-
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-//        g.setColor(new Color(151, 219, 19));
-//        g.fillRect(0,0,this.getWidth(), this.getHeight());
-    }
-
-    private JPanel createLine(Component c) {
-        JPanel jp = new JPanel();
-
-        jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
-        jp.add(Box.createHorizontalGlue());
-        jp.add(c);
-        jp.add(Box.createHorizontalGlue());
-        jp.setOpaque(false);
-
-        return jp;
-    }
-
-//    private void addStartButton(){
-//        JButton startButton = new JButton("Start game");
-//        startButton.addActionListener(e -> {
-//            GameEngine engine = new GameEngine();
-//            engine.run();
-//        });
-//        this.add(createLine(startButton));
-//    }
-//
-//    private void addEndButton(){
-//        JButton endButton = new JButton("End game");
-//        endButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.exit(0);
-//            }
-//        });
-//        this.add(createLine(endButton));
-//
-//    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -105,11 +43,20 @@ public class GamePanel extends JPanel implements KeyListener {
             case KeyEvent.VK_RIGHT -> {
                 f = gameEngine.moveTiles(Direction.RIGHT);
             }
-
         }
+
+        dataPanel.updateScore();
+
+        if (gameEngine.gameWon())  {
+            JOptionPane.showMessageDialog(null, "Congratulations, you won!");
+            System.exit(0);
+        }
+
         if (!f) {
             JOptionPane.showMessageDialog(null, "Game over, try again!");
+            System.exit(0);
         }
+
         repaintBoard();
     }
 
@@ -140,7 +87,6 @@ public class GamePanel extends JPanel implements KeyListener {
             if (board[row][col].getValue() == 0) tile.setBackground(board[row][col].getColor());
             this.add(tile);
         }
-//        this.setVisible(true);
     }
 
     private void repaintBoard() {

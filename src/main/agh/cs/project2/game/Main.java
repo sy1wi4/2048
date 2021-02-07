@@ -9,8 +9,4 @@ public class Main {
 
         GameFrame frame = new GameFrame();
     }
-
-
-    // TODO: wektory pozycji, move vertical/horizontal - wymysl co
-    // TODO: nulle zamiast tile z wartością 0 (?)
 }

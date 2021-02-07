@@ -13,7 +13,6 @@ public class GameEngine {
         this.score = 0;
     }
 
-
     public boolean moveTiles(Direction direction){
         switch (direction){
             case UP -> moveVertical(UP);
@@ -22,6 +21,7 @@ public class GameEngine {
             case RIGHT -> moveHorizontal(RIGHT);
         }
 
+        System.out.println(score);
         return addRandomTileOnBoard();
     }
 
@@ -29,7 +29,7 @@ public class GameEngine {
         Tile freeTile = board.getRandomFreeTile();
 
         if (freeTile == null) {
-            System.out.println("Game over");
+//            System.out.println("Game over");
             return false;
         }
 
@@ -153,5 +153,9 @@ public class GameEngine {
 
     public Tile[][] getBoard() {
         return board.getBoard();
+    }
+
+    public boolean gameWon(){
+        return (board.getMaxTileValue() == 2048);
     }
 }

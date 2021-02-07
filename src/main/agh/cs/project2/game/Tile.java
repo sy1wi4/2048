@@ -1,15 +1,15 @@
 package agh.cs.project2.game;
 
 import java.awt.*;
+import java.util.IllformedLocaleException;
+import java.util.Objects;
 
 public class Tile {
     private int value;
-    private int x;
-    private int y;
+    private Point location;
 
     public Tile(int x, int y){
-        this.x = x;
-        this.y = y;
+        this.location = new Point(x,y);
         this.value = 0;
     }
 
@@ -28,23 +28,24 @@ public class Tile {
     }
 
     public Tile mergeTiles(Tile this, Tile other, int x, int y){
+        if (this.getValue() != other.getValue()) throw new IllegalArgumentException("Merged tiles must have the same value");
         return new Tile(x,y,2 * this.value);
     }
 
     public void setX(int x) {
-        this.x = x;
+        this.location.setX(x);
     }
 
     public void setY(int y) {
-        this.y = y;
+        this.location.setY(y);
     }
 
     public int getX() {
-        return x;
+        return this.location.getX();
     }
 
     public int getY() {
-        return y;
+        return this.location.getY();
     }
 
     public Color getColor(){
@@ -89,5 +90,19 @@ public class Tile {
             default -> throw new IllegalStateException("Unexpected value: " + this.value);
         }
         return color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return value == tile.value &&
+                Objects.equals(location, tile.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, location);
     }
 }
