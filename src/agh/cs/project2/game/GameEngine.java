@@ -5,8 +5,9 @@ package agh.cs.project2.game;
 import static agh.cs.project2.game.Direction.*;
 
 public class GameEngine {
-    private Board board;
+    private final Board board;
     private int score;
+
     public GameEngine(){
         this.board = new Board();
         this.score = 0;
@@ -21,19 +22,26 @@ public class GameEngine {
             case RIGHT -> moveHorizontal(RIGHT);
         }
 
-        // TODO: dodaj 2 lub inną wartość (niewiększą niż max)
+        return addRandomTileOnBoard();
+    }
+
+    private boolean addRandomTileOnBoard(){
         Tile freeTile = board.getRandomFreeTile();
+
         if (freeTile == null) {
             System.out.println("Game over");
-//            System.exit(0);
             return false;
         }
-        freeTile.updateValue(2);
+
+        int value;
+        if (board.getMaxTileValue() > 2)
+            value = Math.random() > 0.2 ? 2 : 4;
+        else value = 2;
+        freeTile.updateValue(value);
         return true;
     }
 
-    // up - od 0 wiersza
-    // down - od ostatniego wiersza
+
     private void moveVertical(Direction direction){
         int[] rows;
         if (direction == UP) rows = new int[]{0, 1, 2, 3};
@@ -41,19 +49,18 @@ public class GameEngine {
 
         for (int col = 0; col < board.getSize(); col++){
 
-            int toPlace = -1;  // najdalszy możliwy wiersz, w którym możemy umieścić płytkę
-            Tile prev = null;  //poprzednia płytka w danej kolumnie
-            boolean prevMerged = false;  // czy poprzednia była merge'owana - w tym wypadku kolejną tylko przesuwamy
+            int toPlace = -1;  // farthest row, where tile can be placed in given column
+            Tile prev = null;  // previously considered tile in given column
+            boolean prevMerged = false;  // whether prev tile is merged tile - then next tile cannot be merged with it, just moved
 
             for (int row : rows){
-
                 if (!board.isOccupied(row,col)){
                     if (toPlace == -1) toPlace = row;
                 }
                 else{
                     Tile tile = board.getTile(row, col);
 
-                    // tylko przesuwamy (lub nie, jeśli nie ma gdzie)
+                    // move tile to first possible place (or not if there is no place)
                     if (prevMerged || prev == null || (prev.getValue() != tile.getValue())){
                         if (toPlace == -1) {
                             prev = board.getTile(row,col);
@@ -69,10 +76,12 @@ public class GameEngine {
                         prev = tile;
                     }
 
-                    // merge
+                    // merge current tile with previous
                     else {
                         int val = tile.getValue();
-                        board.placeTile(prev.mergeTiles(tile, prev.getX(),prev.getY()));
+                        Tile mergedTile = prev.mergeTiles(tile, prev.getX(),prev.getY());
+                        board.updateMaxTileValue(mergedTile.getValue());
+                        board.placeTile(mergedTile);
                         board.removeTile(row,col);
 
                         if (direction == UP) toPlace = prev.getX() + 1;
@@ -86,8 +95,7 @@ public class GameEngine {
         }
     }
 
-    // left - od 0 kolumny
-    // right - od ostatniej kolumny
+
     private void moveHorizontal(Direction direction) {
         int[] cols;
         if (direction == LEFT) cols = new int[]{0, 1, 2, 3};
@@ -95,29 +103,22 @@ public class GameEngine {
 
         for (int row = 0; row < board.getSize(); row++) {
 
-            int toPlace = -1;  // najdalsza możliwa kolumna, w której możemy umieścić płytkę
-            Tile prev = null;  //poprzednia płytka w danym wierszu
-            boolean prevMerged = false;  // czy poprzednia była merge'owana   TO POTRZEBNE???  -- chyba tak
+            int toPlace = -1;
+            Tile prev = null;
+            boolean prevMerged = false;
 
             for (int col : cols) {
-//                System.out.print(row);
-//                System.out.print(col + " ");
-
                 if (!board.isOccupied(row, col)) {
-//                    System.out.println("wolne");
                     if (toPlace == -1) toPlace = col;
 
                 } else {
 
                     Tile tile = board.getTile(row, col);
 
-                    // tylko przesuwamy (lub nie jak nie ma gdzie)
                     if (prevMerged || (prev == null || (prev.getValue() != tile.getValue()))) {
                         if (toPlace == -1) {
-//                            System.out.println("nie ruszaj");
                             prev = board.getTile(row, col);
                         } else {
-//                            System.out.println("przesun " + toPlace);
                             tile.setY(toPlace);
                             board.placeTile(tile);
                             board.removeTile(row, col);
@@ -128,11 +129,12 @@ public class GameEngine {
                         prevMerged = false;
                     }
 
-                    // merge
                     else {
-//                        System.out.println("merge " + prev.getX() + " " + prev.getY());
                         int val = tile.getValue();
-                        board.placeTile(prev.mergeTiles(tile, prev.getX(), prev.getY()));
+                        Tile mergedTile = prev.mergeTiles(tile, prev.getX(),prev.getY());
+                        board.updateMaxTileValue(mergedTile.getValue());
+
+                        board.placeTile(mergedTile);
                         board.removeTile(row, col);
                         if (direction == LEFT) toPlace = prev.getY() + 1;
                         else toPlace = prev.getY() - 1;

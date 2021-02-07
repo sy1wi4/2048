@@ -8,7 +8,6 @@ public class Main {
 //        e.run();
 
         GameFrame frame = new GameFrame();
-
     }
 
 

@@ -3,15 +3,19 @@ package agh.cs.project2.game;
 import java.util.LinkedList;
 import java.util.Random;
 
+import static java.lang.Integer.max;
+
 public class Board {
     private int size;
     private final Tile[][] board;
     Random rand = new Random();
+    private int maxTileValue;
 
     // default board 4x4
     public Board(){
         this.board = new Tile[4][4];
         this.size = 4;
+        this.maxTileValue = 0;
         initializeBoard();
         placeInitialTiles();
     }
@@ -36,20 +40,12 @@ public class Board {
     private void placeInitialTiles(){
         Tile freeTile1 = getRandomFreeTile();
         freeTile1.updateValue(2);
+
         Tile freeTile2 = getRandomFreeTile();
         freeTile2.updateValue(2);
-    }
 
-//    public void printBoard(){
-//        System.out.println();
-//        for (int i = 0; i < size; i++){
-//            for (int j = 0; j < size; j++){
-//                System.out.print(board[i][j].getValue() + " ");
-//            }
-//            System.out.println();
-//        }
-//        System.out.println();
-//    }
+        updateMaxTileValue(2);
+    }
 
     private LinkedList<Tile> getFreeTiles(){
         LinkedList<Tile> freeTiles = new LinkedList<>();
@@ -90,5 +86,13 @@ public class Board {
 
     public Tile[][] getBoard() {
         return board;
+    }
+
+    public void updateMaxTileValue(int value) {
+        this.maxTileValue = max(this.maxTileValue,value);
+    }
+
+    public int getMaxTileValue() {
+        return maxTileValue;
     }
 }
