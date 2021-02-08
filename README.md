@@ -1,6 +1,6 @@
 # Project 2 - 2048 Game
 ### https://github.com/apohllo/obiektowe-lab/blob/master/proj2/2048.md
-<img src="https://github.com/sy1wi4/2048/blob/master/2048game.png" width="425" hspace="30"/> <img src="https://github.com/sy1wi4/2048/blob/master/2048gameover.png" width="425"/>
+<img src="https://github.com/sy1wi4/2048/blob/master/2048game.png" width="300" hspace="30"/> <img src="https://github.com/sy1wi4/2048/blob/master/2048gameover.png" width="300"/>
 
 ## Rules:
 Game is played on 4x4 board. Start with two "2" tiles, to move them use **arrow keys**. <br />
