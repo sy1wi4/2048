@@ -6,6 +6,6 @@
 Game is played on 4x4 board. Start with two "2" tiles, to move them use **arrow keys**. <br />
 Combine tiles with the same number in order to get higher valued tile (with the sum of merged tiles). <br />
 Every time you move, another tile pops up in a random place (2 or 4 but no larger than what is currently on the board). <br />
-If every square on your board is filled with a tile, **you lose** :disappointed:. <br />
+If every square on your board is filled with a tile, **you lose**. :disappointed: <br />
 :trophy:**Objective is to reach 2048 before the board fills up.**:trophy:
 
